@@ -29,7 +29,7 @@ public class ParkingBoyTest {
         ParkingBoy parkingBoy = new ParkingBoy(parkingLotList);
         Ticket ticket = new Ticket();
         //when
-        Car car = parkingBoy.getCar(ticket);
+        Car car = parkingBoy.fetchCar(ticket);
         //then
         Assertions.assertNotNull(ticket);
     }
@@ -43,7 +43,7 @@ public class ParkingBoyTest {
         Car parkingcar = new Car("BMW");
         Ticket ticket = parkingBoy.parkingCar(parkingcar);
         //when
-        Car getCar = parkingBoy.getCar(ticket);
+        Car getCar = parkingBoy.fetchCar(ticket);
         //then
         Assertions.assertEquals(parkingcar,getCar);
     }
@@ -56,7 +56,7 @@ public class ParkingBoyTest {
         ParkingBoy parkingBoy = new ParkingBoy(parkingLotList);
         Ticket ticket = new Ticket();
         //when
-        Car car = parkingBoy.getCar(ticket);
+        Car car = parkingBoy.fetchCar(ticket);
         //then
         Assertions.assertNotNull(ticket);
     }
@@ -70,7 +70,7 @@ public class ParkingBoyTest {
         ParkingBoy parkingBoy = new ParkingBoy(parkingLotList);
         Ticket ticket = new Ticket(true);
         //when
-        Car car = parkingBoy.getCar(ticket);
+        Car car = parkingBoy.fetchCar(ticket);
         //then
         Assertions.assertNull(car);
     }
@@ -84,7 +84,7 @@ public class ParkingBoyTest {
         ParkingBoy parkingBoy = new ParkingBoy(parkingLotList);
         Ticket ticket = new Ticket();
         //when
-        Car car = parkingBoy.getCar(ticket);
+        Car car = parkingBoy.fetchCar(ticket);
         //then
         Assertions.assertNull(car);
     }
@@ -98,7 +98,7 @@ public class ParkingBoyTest {
         ParkingBoy parkingBoy = new ParkingBoy(parkingLotList);
         Ticket ticket = new Ticket();
         //when
-        Car car = parkingBoy.getCar(ticket);
+        Car car = parkingBoy.fetchCar(ticket);
         //then
         Assertions.assertNull(car);
     }
@@ -126,7 +126,7 @@ public class ParkingBoyTest {
         ParkingBoy parkingBoy = new ParkingBoy(parkingLotList);
         Ticket ticket = new Ticket();
         //when
-        parkingBoy.getCar(ticket);
+        parkingBoy.fetchCar(ticket);
         //then
         Assertions.assertEquals("Unrecognized parking ticket",parkingBoy.getMessage());
     }
@@ -139,7 +139,7 @@ public class ParkingBoyTest {
         parkingLotList.add(parkingLot);
         ParkingBoy parkingBoy = new ParkingBoy(parkingLotList);
         //when
-        parkingBoy.getCar(null);
+        parkingBoy.fetchCar(null);
         //then
         Assertions.assertEquals("Please provide your parking ticket.",parkingBoy.getMessage());
     }

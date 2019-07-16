@@ -1,10 +1,15 @@
 package com.thoughtworks.tdd;
 
+import java.util.HashMap;
 import java.util.List;
 
-public class ParkingBoy implements ParkingCarPerson {
+public class SuperSmartParkingBoy implements ParkingCarPerson {
     private String message;
     private List<ParkingLot> parkingLotList;
+
+    public SuperSmartParkingBoy(List<ParkingLot> parkingLotList) {
+        this.parkingLotList = parkingLotList;
+    }
 
     public String getMessage() {
         return message;
@@ -14,7 +19,11 @@ public class ParkingBoy implements ParkingCarPerson {
         this.message = message;
     }
 
-    public ParkingBoy(List<ParkingLot> parkingLotList) {
+    private List<ParkingLot> getParkingLotList() {
+        return parkingLotList;
+    }
+
+    public void setParkingLotList(List<ParkingLot> parkingLotList) {
         this.parkingLotList = parkingLotList;
     }
 
@@ -24,16 +33,24 @@ public class ParkingBoy implements ParkingCarPerson {
         if(car == null){
             throw new RuntimeException();
         }
+        ParkingLot parkingLot = findMostPosionParkingLot(this.getParkingLotList());
+        ticket = parkingLot.parkingCar(car);
+        return ticket;
+    }
+
+    private ParkingLot findMostPosionParkingLot(List<ParkingLot> parkingLotList) {
+        HashMap<Double,ParkingLot> listHashMap = new HashMap<Double, ParkingLot>();
+        double mostPostion = 0;
         for(ParkingLot parkingLot:this.getParkingLotList()){
             if(!parkingLot.getFull()){
-                ticket = parkingLot.parkingCar(car);
+                double postion = parkingLot.getParkingRate();
+                if(mostPostion< postion){
+                    mostPostion = postion;
+                }
+                listHashMap.put(postion,parkingLot);
             }
         }
-        if(ticket.getParkingLotName()==null){
-            this.setMessage("Not enough position.");
-            return null;
-        }
-        return ticket;
+        return listHashMap.get(mostPostion);
     }
 
     @Override
@@ -43,7 +60,7 @@ public class ParkingBoy implements ParkingCarPerson {
             this.setMessage("Please provide your parking ticket.");
             return null;
         }
-        if(ticket.getCorrespondCar()==null || ticket.getUsed()){
+        if(ticket.getCorrespondCar()==null ||ticket.getUsed()){
             this.setMessage("Unrecognized parking ticket");
             return null;
         }
@@ -53,13 +70,5 @@ public class ParkingBoy implements ParkingCarPerson {
             }
         }
         return car;
-    }
-
-    private List<ParkingLot> getParkingLotList() {
-        return parkingLotList;
-    }
-
-    public void setParkingLotList(List<ParkingLot> parkingLotList) {
-        this.parkingLotList = parkingLotList;
     }
 }

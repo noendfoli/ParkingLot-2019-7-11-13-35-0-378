@@ -2,15 +2,29 @@ package com.thoughtworks.tdd;
 
 import java.util.List;
 
-public class Manager implements OpreratingCar {
+public class Manager implements ParkingCarPerson {
     private String message;
     private List<ParkingLot> parkingLotList;
+    private List<ParkingBoy> parkingBoyList;
+
+    public List<ParkingBoy> getParkingBoyList() {
+        return parkingBoyList;
+    }
+
+    public void setParkingBoyList(List<ParkingBoy> parkingBoyList) {
+        this.parkingBoyList = parkingBoyList;
+    }
 
     public Manager(List<ParkingLot> parkingLotList) {
         this.parkingLotList = parkingLotList;
     }
 
-    public List<ParkingLot> getParkingLotList() {
+    public Manager(List<ParkingLot> parkingLotList, List<ParkingBoy> parkingBoyList) {
+        this.parkingLotList = parkingLotList;
+        this.parkingBoyList = parkingBoyList;
+    }
+
+    private List<ParkingLot> getParkingLotList() {
         return parkingLotList;
     }
 
@@ -22,7 +36,7 @@ public class Manager implements OpreratingCar {
         return message;
     }
 
-    public void setMessage(String message) {
+    private void setMessage(String message) {
         this.message = message;
     }
 
@@ -42,21 +56,31 @@ public class Manager implements OpreratingCar {
     }
 
     @Override
-    public Car getCar(Ticket ticket) {
+    public Car fetchCar(Ticket ticket) {
         Car car = new Car();
         if(ticket==null){
             this.setMessage("Please provide your parking ticket.");
             return null;
         }
-        if(ticket.getCorrespondCar()==null ||ticket.getUsed() == true){
+        if(ticket.getCorrespondCar()==null || ticket.getUsed()){
             this.setMessage("Unrecognized parking ticket");
             return null;
         }
         for(ParkingLot parkingLot:this.getParkingLotList()){
-            if(parkingLot.getParkingLotName()== ticket.getParkingLotName()){
+            if(parkingLot.getParkingLotName().equals(ticket.getParkingLotName())){
                 car = parkingLot.getCarByTicket(ticket);
             }
         }
         return car;
+    }
+    public Ticket specifyPackingBoyPakingCar(ParkingBoy parkingBoy,Car car){
+        if(this.getParkingBoyList().contains(parkingBoy)){
+             if(parkingBoy.parkingCar(car)==null){
+                 this.setMessage("all ParkLot full");
+             }else {
+                 return parkingBoy.parkingCar(car);
+             }
+        }
+        return null;
     }
 }

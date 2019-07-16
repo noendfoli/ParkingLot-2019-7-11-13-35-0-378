@@ -5,12 +5,15 @@ import java.util.List;
 
 public class ParkingLot{
     private String parkingLotName;
-    public static final int parkingLotCapitity = 10;
+    private static final int parkingLotCapitity = 10;
     private List<Car> parkingSpace = new LinkedList<>();
     private Boolean isFull = false;
 
+    public ParkingLot(String parkingLotName) {
+        this.parkingLotName = parkingLotName;
+    }
 
-    public String getParkingLotName() {
+    String getParkingLotName() {
         return parkingLotName;
     }
 
@@ -27,12 +30,16 @@ public class ParkingLot{
         }
         return new Ticket(car,false,this.getParkingLotName());
     }
-
-    public Car getCarByTicket(Ticket ticket) {
+    public double getParkingRate(){
+        double parkingRate = 0;
+        parkingRate = (double)(parkingLotCapitity-this.getParkingSpace().size())/parkingLotCapitity;
+        return parkingRate;
+    }
+    Car getCarByTicket(Ticket ticket) {
         return ticket.getCorrespondCar();
     }
 
-    public List<Car> getParkingSpace() {
+    List<Car> getParkingSpace() {
         return parkingSpace;
     }
 
@@ -41,7 +48,7 @@ public class ParkingLot{
     }
 
 
-    public Boolean getFull() {
+    Boolean getFull() {
         return isFull;
     }
 
@@ -61,7 +68,7 @@ public class ParkingLot{
         this.isFull = isFull;
     }
 
-    public static int getParkingLotCapitity() {
+    static int getParkingLotCapitity() {
         return parkingLotCapitity;
     }
 }

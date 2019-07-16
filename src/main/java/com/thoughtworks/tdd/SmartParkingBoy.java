@@ -3,7 +3,7 @@ package com.thoughtworks.tdd;
 import java.util.HashMap;
 import java.util.List;
 
-public class SmartParkingBoy implements OpreratingCar {
+public class SmartParkingBoy implements ParkingCarPerson {
     private String message;
     private List<ParkingLot> parkingLotList;
 
@@ -15,11 +15,11 @@ public class SmartParkingBoy implements OpreratingCar {
         return message;
     }
 
-    public void setMessage(String message) {
+    private void setMessage(String message) {
         this.message = message;
     }
 
-    public List<ParkingLot> getParkingLotList() {
+    private List<ParkingLot> getParkingLotList() {
         return parkingLotList;
     }
 
@@ -43,7 +43,7 @@ public class SmartParkingBoy implements OpreratingCar {
         Integer mostPostion = 0;
         for(ParkingLot parkingLot:this.getParkingLotList()){
             if(!parkingLot.getFull()){
-                Integer postion = Integer.valueOf(parkingLot.getParkingLotCapitity() - parkingLot.getParkingSpace().size());
+                Integer postion = parkingLot.getParkingLotCapitity() - parkingLot.getParkingSpace().size();
                 if(mostPostion< postion){
                     mostPostion = postion;
                 }
@@ -54,18 +54,18 @@ public class SmartParkingBoy implements OpreratingCar {
     }
 
     @Override
-    public Car getCar(Ticket ticket) {
+    public Car fetchCar(Ticket ticket) {
         Car car = new Car();
         if(ticket==null){
             this.setMessage("Please provide your parking ticket.");
             return null;
         }
-        if(ticket.getCorrespondCar()==null ||ticket.getUsed() == true){
+        if(ticket.getCorrespondCar()==null || ticket.getUsed()){
             this.setMessage("Unrecognized parking ticket");
             return null;
         }
         for(ParkingLot parkingLot:this.getParkingLotList()){
-            if(parkingLot.getParkingLotName()== ticket.getParkingLotName()){
+            if(parkingLot.getParkingLotName().equals(ticket.getParkingLotName())){
                 car = parkingLot.getCarByTicket(ticket);
             }
         }
