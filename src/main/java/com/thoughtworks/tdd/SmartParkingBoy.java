@@ -1,10 +1,15 @@
 package com.thoughtworks.tdd;
 
+import java.util.HashMap;
 import java.util.List;
 
-public class ParkingBoy implements OpreratingCar{
+public class SmartParkingBoy implements OpreratingCar {
     private String message;
     private List<ParkingLot> parkingLotList;
+
+    public SmartParkingBoy(List<ParkingLot> parkingLotList) {
+        this.parkingLotList = parkingLotList;
+    }
 
     public String getMessage() {
         return message;
@@ -14,7 +19,11 @@ public class ParkingBoy implements OpreratingCar{
         this.message = message;
     }
 
-    public ParkingBoy(List<ParkingLot> parkingLotList) {
+    public List<ParkingLot> getParkingLotList() {
+        return parkingLotList;
+    }
+
+    public void setParkingLotList(List<ParkingLot> parkingLotList) {
         this.parkingLotList = parkingLotList;
     }
 
@@ -24,13 +33,24 @@ public class ParkingBoy implements OpreratingCar{
         if(car == null){
             throw new RuntimeException();
         }
-        this.setMessage("Not enough position.");
+        ParkingLot parkingLot = findMostPosionParkingLot(this.getParkingLotList());
+        ticket = parkingLot.parkingCar(car);
+        return ticket;
+    }
+
+    private ParkingLot findMostPosionParkingLot(List<ParkingLot> parkingLotList) {
+        HashMap<Integer,ParkingLot> listHashMap = new HashMap<Integer, ParkingLot>();
+        Integer mostPostion = 0;
         for(ParkingLot parkingLot:this.getParkingLotList()){
             if(!parkingLot.getFull()){
-                 ticket = parkingLot.parkingCar(car);
+                Integer postion = Integer.valueOf(parkingLot.getParkingLotCapitity() - parkingLot.getParkingSpace().size());
+                if(mostPostion< postion){
+                    mostPostion = postion;
+                }
+                listHashMap.put(postion,parkingLot);
             }
         }
-        return ticket;
+        return listHashMap.get(mostPostion);
     }
 
     @Override
@@ -50,13 +70,5 @@ public class ParkingBoy implements OpreratingCar{
             }
         }
         return car;
-    }
-
-    public List<ParkingLot> getParkingLotList() {
-        return parkingLotList;
-    }
-
-    public void setParkingLotList(List<ParkingLot> parkingLotList) {
-        this.parkingLotList = parkingLotList;
     }
 }

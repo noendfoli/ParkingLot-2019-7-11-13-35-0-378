@@ -2,9 +2,21 @@ package com.thoughtworks.tdd;
 
 import java.util.List;
 
-public class ParkingBoy implements OpreratingCar{
+public class Manager implements OpreratingCar {
     private String message;
     private List<ParkingLot> parkingLotList;
+
+    public Manager(List<ParkingLot> parkingLotList) {
+        this.parkingLotList = parkingLotList;
+    }
+
+    public List<ParkingLot> getParkingLotList() {
+        return parkingLotList;
+    }
+
+    public void setParkingLotList(List<ParkingLot> parkingLotList) {
+        this.parkingLotList = parkingLotList;
+    }
 
     public String getMessage() {
         return message;
@@ -12,10 +24,6 @@ public class ParkingBoy implements OpreratingCar{
 
     public void setMessage(String message) {
         this.message = message;
-    }
-
-    public ParkingBoy(List<ParkingLot> parkingLotList) {
-        this.parkingLotList = parkingLotList;
     }
 
     @Override
@@ -27,7 +35,7 @@ public class ParkingBoy implements OpreratingCar{
         this.setMessage("Not enough position.");
         for(ParkingLot parkingLot:this.getParkingLotList()){
             if(!parkingLot.getFull()){
-                 ticket = parkingLot.parkingCar(car);
+                ticket = parkingLot.parkingCar(car);
             }
         }
         return ticket;
@@ -50,13 +58,5 @@ public class ParkingBoy implements OpreratingCar{
             }
         }
         return car;
-    }
-
-    public List<ParkingLot> getParkingLotList() {
-        return parkingLotList;
-    }
-
-    public void setParkingLotList(List<ParkingLot> parkingLotList) {
-        this.parkingLotList = parkingLotList;
     }
 }
